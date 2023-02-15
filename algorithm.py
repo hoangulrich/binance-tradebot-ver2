@@ -1,0 +1,97 @@
+import variables.globalVar as globalVar
+from components.loopOrder import *
+from components.endOrder import *
+from components.printOrder import printOrder
+from components.restart import restart_stream
+from module.cancelOrder import cancelOrder
+from module.positionIsEmpty import positionIsEmpty
+from utils.printColor import *
+from binanceAPI.teleBot import *
+
+
+# def algorithm(filledPrice, filledQuantity, filledPositionSide, filledStatus):
+
+#     # RESTART PROGRAM WHEN THERE ARE NO POSITION LEFT
+#     if positionIsEmpty() == True:
+#         restart_stream()
+
+#     # MAIN ALGORITHM
+#     else:
+#         # ASSIGN INITIAL CEILING/FLOOR
+#         if globalVar.x == 0:
+#             # LONG 1ST
+#             # globalVar.initialCeiling = round(float(filledPrice),globalVar.decimalPrecision)
+#             # globalVar.initialFloor = round(globalVar.initialCeiling - globalVar.gap * globalVar.initialCeiling,globalVar.decimalPrecision)
+
+#             # SHORT 1ST
+#             globalVar.initialFloor = round(
+#                 float(filledPrice), globalVar.decimalPrecision)
+#             globalVar.initialCeiling = round(
+#                 globalVar.initialFloor + globalVar.gap * globalVar.initialFloor, globalVar.decimalPrecision)
+#             send_error("\n*******START*******" +
+#                        "\n - Current Ceiling Price is: " + str(round(globalVar.initialCeiling, 4)) +
+#                        "\n - Current Floor Price is: " + str(round(globalVar.initialFloor, 4)) +
+#                        "\n https://www.binance.com/en/futures/"+globalVar.symbol)
+#             print("\nCeiling Price: " + str(round(globalVar.initialCeiling, 4)) +
+#                   "\nFloor Price: " + str(round(globalVar.initialFloor, 4))
+#                   +"\nChart:")
+#             print(f"\thttps://www.binance.com/en/futures/{globalVar.symbol}")
+
+#         # CALCULATE MARGIN/NAV
+#         globalVar.margin = round(float(filledQuantity) / globalVar.leverage *
+#                                  float(globalVar.initialCeiling), globalVar.decimalPrecision)
+#         globalVar.cumulativeMargin += globalVar.margin
+
+#         # SEND INFO TELEGRAM
+#         # -- TO DO --
+#         send_error("Order no. " + str(globalVar.x) +
+#                    "\n - Order is " + str(filledStatus) + " " + str(filledPositionSide) +
+#                    "\n - Order margin is " + str(round(globalVar.margin, 2)) + " USDT" +
+#                    "\n - Total NAV is " + str(round(globalVar.cumulativeMargin, 2)) + " USDT")
+#         print("\nPHASE " + str(globalVar.x))
+
+#         # EVENT LOOP
+#         if globalVar.x < globalVar.Xmax:
+
+#             globalVar.x += 1
+#             # globalVar.quantity = globalVar.quantity * pow(2, globalVar.x)
+#             globalVar.quantity = globalVar.quantity * 2
+
+#             if filledPositionSide == "LONG" and globalVar.expiredOrder == False:
+#                 loopLong(globalVar.quantity)
+#             elif filledPositionSide == "SHORT" and globalVar.expiredOrder == False:
+#                 loopShort(globalVar.quantity)
+
+#         # LAST ORDER/BREAK EVEN
+#         else:
+#             globalVar.x += 1
+#             if globalVar.x == globalVar.Xmax + 1:
+#                 if filledPositionSide == "LONG":
+#                     endLong()
+#                 else:
+#                     endShort()
+#             if globalVar.x == globalVar.Xmax + 2:
+#                 if filledPositionSide == "LONG":
+#                     endFinalLong()
+#                 else:
+#                     endFinalShort()
+
+def algorithm(price, quantity, positionSide, type):
+    #INITIAL
+    if globalVar.x == 0:
+        globalVar.initialFloor = round(float(price), globalVar.decimalPrecision)
+        globalVar.initialCeiling = round(globalVar.initialFloor + globalVar.gap * globalVar.initialFloor, globalVar.decimalPrecision)
+        
+        newOrder(globalVar.symbol, "LONG", "BUY", "STOP_MARKET", globalVar.quantity, globalVar.initialCeiling)
+        TP_SHORT = round(globalVar.initialFloor*99.75/100,globalVar.decimalPrecision)
+        takeProfit(globalVar.symbol, "SHORT", "BUY", "TAKE_PROFIT_MARKET", TP_SHORT)
+    globalVar.x + 1
+
+    #LOOP
+    if globalVar.x != 0:
+        if positionSide == "SHORT" and type == "TAKE_PROFIT_MARKET":
+            newMarketOrder(globalVar.symbol, "SHORT", "SELL", "MARKET", globalVar.quantity)
+            TP_SHORT = round(globalVar.initialFloor*99.75/100,globalVar.decimalPrecision)
+            takeProfit(globalVar.symbol, "SHORT", "BUY", "TAKE_PROFIT_MARKET", TP_SHORT)
+        elif positionSide == "LONG" and type == "TAK_MARKET":
+            newMarketOrder(globalVar.symbol, "LONG", "BUY", "MRKET", globalVar.quantity)
