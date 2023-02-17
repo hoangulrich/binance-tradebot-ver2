@@ -8,9 +8,9 @@ from binanceAPI.teleBot import send_error
 #config_logging(logging, logging.DEBUG)
 
 # CHECK IF POSITION IS EMPTY
-def positionIsEmpty():
+def positionIsEmpty(symbol):
     try:
-        response = um_futures_client.get_position_risk(symbol = globalVar.symbol)
+        response = um_futures_client.get_position_risk(symbol= symbol)
         trigger1 = float(response[0]["positionAmt"])
         trigger2 = float(response[1]["positionAmt"])
         

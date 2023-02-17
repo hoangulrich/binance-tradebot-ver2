@@ -19,8 +19,8 @@ def endLong():
     # TP_SHORT = globalVar.initialFloor-(round(offsetFee,globalVar.decimalPrecision))
     # takeProfit(globalVar.symbol, "SHORT", "BUY", "TAKE_PROFIT_MARKET", TP_SHORT)
 
-    TP_LONG = round(globalVar.initialCeiling*100.25/100,globalVar.decimalPrecision)
-    TP_SHORT = round(globalVar.initialFloor*99.75/100,globalVar.decimalPrecision)
+    TP_LONG = round(globalVar.initialCeiling*(1+globalVar.BE/globalVar.leverage),globalVar.decimalPrecision)
+    TP_SHORT = round(globalVar.initialFloor*(1-globalVar.BE/globalVar.leverage),globalVar.decimalPrecision)
     takeProfit(globalVar.symbol, "LONG", "SELL", "TAKE_PROFIT_MARKET", TP_LONG)
     takeProfit(globalVar.symbol, "SHORT", "BUY", "TAKE_PROFIT_MARKET", TP_SHORT)
 
@@ -40,29 +40,29 @@ def endShort():
     # takeProfit(globalVar.symbol, "LONG", "SELL", "TAKE_PROFIT_MARKET", TP_LONG)
     # TP_LONG = globalVar.initialCeiling+(round(offsetFee,globalVar.decimalPrecision))
 
-    TP_LONG = round(globalVar.initialCeiling*100.25/100,globalVar.decimalPrecision)
-    TP_SHORT = round(globalVar.initialFloor*99.75/100,globalVar.decimalPrecision)
+    TP_LONG = round(globalVar.initialCeiling*(1+globalVar.BE/globalVar.leverage),globalVar.decimalPrecision)
+    TP_SHORT = round(globalVar.initialFloor*(1-globalVar.BE/globalVar.leverage),globalVar.decimalPrecision)
     takeProfit(globalVar.symbol, "LONG", "SELL", "TAKE_PROFIT_MARKET", TP_LONG)
     takeProfit(globalVar.symbol, "SHORT", "BUY", "TAKE_PROFIT_MARKET", TP_SHORT)
 
 def endFinalLong():
     cancelOrder(globalVar.symbol)
-    send_error("Breakeven triggered.")
+    #send_error("Breakeven triggered.")
 
     # offsetFee = round(globalVar.initialFloor,2)*0.2/100
     # TP_SHORT = globalVar.initialFloor-(round(offsetFee,globalVar.decimalPrecision)) 
     # takeProfit(globalVar.symbol, "SHORT", "BUY", "TAKE_PROFIT_MARKET", TP_SHORT)
 
-    TP_SHORT = round(globalVar.initialFloor*99.75/100,globalVar.decimalPrecision)
+    TP_SHORT = round(globalVar.initialFloor*(1-globalVar.BE/globalVar.leverage),globalVar.decimalPrecision)
     takeProfit(globalVar.symbol, "SHORT", "BUY", "TAKE_PROFIT_MARKET", TP_SHORT)
     
 def endFinalShort():
     cancelOrder(globalVar.symbol)
-    send_error("Breakeven triggered.")
+    #send_error("Breakeven triggered.")
     
     # offsetFee = round(globalVar.initialCeiling,2)*0.2/100
     # TP_LONG = globalVar.initialCeiling+(round(offsetFee,globalVar.decimalPrecision))
     # takeProfit(globalVar.symbol, "LONG", "SELL", "TAKE_PROFIT_MARKET", TP_LONG)
     
-    TP_LONG = round(globalVar.initialCeiling*100.25/100,globalVar.decimalPrecision)
+    TP_LONG = round(globalVar.initialCeiling*(1+globalVar.BE/globalVar.leverage),globalVar.decimalPrecision)
     takeProfit(globalVar.symbol, "LONG", "SELL", "TAKE_PROFIT_MARKET", TP_LONG)

@@ -15,7 +15,7 @@ def on_open(ws):
         if symbol["symbol"] == globalVar.symbol:
             globalVar.decimalPrecision = symbol["pricePrecision"]
             globalVar.quantityPrecision = symbol["quantityPrecision"]
-    initialOrder()
+    initialOrder(globalVar.symbol)
     
 def on_message(ws, message):
     #prYellow(f"\nMessage: {message}\n")
@@ -32,31 +32,38 @@ def on_message(ws, message):
         type = event_dict["o"]["o"] #STOP_MARKET/TAKE_PROFIT_MARKET
         id = event_dict["o"]["i"]
         side = event_dict["o"]["S"] #SELL/BUY
+        symbol = event_dict["o"]["s"] #BTCUSDT
 
-        if(event_dict["o"]["X"] == "FILLED"):
+        if event_dict["o"]["X"] == "FILLED" and symbol == globalVar.symbol:
             # LOG
             prGreen(f"POSITION:: ID: {id} | Type: {type} | Status: {status} | Side: {positionSide}-{side}")
             
-            # START ALGORITHM
-            algorithm(price, quantity, positionSide, type)
+            # START ALGORITHM 
             
-        elif(event_dict["o"]["X"] == "EXPIRED"):
+            if globalVar.expiredOrder == False:
+                algorithm(price, quantity, positionSide, type)
+            globalVar.expiredOrder = False #test
+            
+        elif(event_dict["o"]["X"] == "EXPIRED") and symbol == globalVar.symbol:
             # LOG
             prRed(f"ORDER:: ID: {id} | Type: {type} | Status: {status} | Side: {positionSide}-{side}")
 
             # FIX EXPIRED ORDER
             # limit = globalVar.Xmax - 1
+            globalVar.expiredOrder = True #test
+            #algorithm(price, quantity, positionSide, type)
+            
             if getOrderCount(globalVar.symbol) == 2: #and globalVar.x < globalVar.Xmax:
-                fixExpired(positionSide)
+                algorithm(price, quantity, positionSide, type)
             else:
                 print("NO NEED FIX AT NUMBER OF ORDERS = " + str(getOrderCount(globalVar.symbol)))
         
-        elif(event_dict["o"]["X"] == "NEW"):
+        elif(event_dict["o"]["X"] == "NEW") and symbol == globalVar.symbol:
             # LOG
             prYellow(f"ORDER:: ID: {id} | Type: {type} | Status: {status} | Side: {positionSide}-{side}")
-            globalVar.orderBook.update({id, type})
+            #globalVar.orderList.append(id, type)
             
-        elif(event_dict["o"]["X"] == "PARTIALLY_FILLED"):
+        elif(event_dict["o"]["X"] == "PARTIALLY_FILLED") and symbol == globalVar.symbol:
             prRed(f"ORDER:: ID: {id} | Type: {type} | Status: {status} | Side: {positionSide}-{side}")
         
             

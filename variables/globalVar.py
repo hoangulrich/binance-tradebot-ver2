@@ -49,5 +49,11 @@ start = None
 global end 
 end = None
 
-global orderBook
-orderBook = {}
+global power
+power = None
+
+global BE
+BE = None
+
+# global orderList
+# orderList = []

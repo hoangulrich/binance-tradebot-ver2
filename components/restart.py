@@ -25,7 +25,7 @@ def restart_stream():
 
   # RESTART
   ask_input()
-  initialOrder()
+  initialOrder(globalVar.symbol)
   
 
 def getDuration():
