@@ -55,5 +55,5 @@ power = None
 global BE
 BE = None
 
-# global orderList
-# orderList = []
+global orderList
+orderList = []

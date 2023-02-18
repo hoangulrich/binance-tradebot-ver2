@@ -17,13 +17,14 @@ def restart_stream():
   duration = getDuration()
   record(pnl, duration)
 
-  # SEND INFO TELEGRAM
-  send_error("PNL: " + "$" + str(pnl) + "\nGain: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%"
+  # SEND INFO TELEGRAM + LOG
+  sendData("PNL: " + "$" + str(pnl) + "\nGain: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%"
   + "\n*******RESTART*******")
   print("PNL: " + "$" + str(pnl) + " | GAIN: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%")
   prCyan("\n*******RESTART*******")
 
   # RESTART
+  globalVar.orderList.clear()
   ask_input()
   initialOrder(globalVar.symbol)
   

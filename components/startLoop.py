@@ -10,7 +10,7 @@ def initialOrder(symbol):
   globalVar.initialBalance = getBalance()
   globalVar.start = datetime.now()
   
-  prCyan("\nINITIAL ORDER")
+  prCyan("\nINITIAL ORDER(startloop)")
   # newMarketOrder(globalVar.symbol, "LONG", "BUY", "MARKET", globalVar.quantity)
   newMarketOrder(symbol, "SHORT", "SELL", "MARKET", globalVar.quantity)
 

@@ -1,4 +1,4 @@
-import websocket, json, threading, time, re
+import websocket, json, threading, time
 from utils.printColor import *
 from algorithm import *
 from binanceAPI.datastream import *
@@ -36,42 +36,51 @@ def on_message(ws, message):
 
         if event_dict["o"]["X"] == "FILLED" and symbol == globalVar.symbol:
             # LOG
-            prGreen(f"POSITION:: ID: {id} | Type: {type} | Status: {status} | Side: {positionSide}-{side}")
+            prGreen(f"{symbol} | ID: {id} | Status: {status} | Side: {positionSide}-{side} | Type: {type}")
             
             # START ALGORITHM 
+            #if globalVar.expiredOrder == False:
+            if id not in globalVar.orderList:
+                algorithm(symbol, price, quantity, positionSide, type)
             
-            if globalVar.expiredOrder == False:
-                algorithm(price, quantity, positionSide, type)
-            globalVar.expiredOrder = False #test
             
-        elif(event_dict["o"]["X"] == "EXPIRED") and symbol == globalVar.symbol:
+        elif event_dict["o"]["X"] == "EXPIRED" and symbol == globalVar.symbol:
             # LOG
-            prRed(f"ORDER:: ID: {id} | Type: {type} | Status: {status} | Side: {positionSide}-{side}")
+            prRed(f"{symbol} | ID: {id} | Status: {status} | Side: {positionSide}-{side} | Type: {type}")
 
             # FIX EXPIRED ORDER
             # limit = globalVar.Xmax - 1
-            globalVar.expiredOrder = True #test
+            # globalVar.expiredOrder = True #test
             #algorithm(price, quantity, positionSide, type)
             
-            if getOrderCount(globalVar.symbol) == 2: #and globalVar.x < globalVar.Xmax:
-                algorithm(price, quantity, positionSide, type)
-            else:
-                print("NO NEED FIX AT NUMBER OF ORDERS = " + str(getOrderCount(globalVar.symbol)))
+            # if getOrderCount(globalVar.symbol) == 2: #and globalVar.x < globalVar.Xmax:
+            #     algorithm(price, quantity, positionSide, type)
+            #     globalVar.expiredOrder = False #test
+            # else:
+            #     print("NO NEED FIX AT NUMBER OF ORDERS = " + str(getOrderCount(globalVar.symbol)))
+
+            globalVar.orderList.append(id)
+            if type != "TAKE_PROFIT_MARKET":
+                algorithm(symbol, price, quantity, positionSide, type)
+            # if getOrderCount(globalVar.symbol) == 2: #and globalVar.x < globalVar.Xmax:
+            #     fixExpired(id,positionSide)
+            # else:
+            #     print("NO NEED FIX AT NUMBER OF ORDERS = " + str(getOrderCount(globalVar.symbol)))
         
-        elif(event_dict["o"]["X"] == "NEW") and symbol == globalVar.symbol:
+        elif event_dict["o"]["X"] == "NEW" and symbol == globalVar.symbol:
             # LOG
-            prYellow(f"ORDER:: ID: {id} | Type: {type} | Status: {status} | Side: {positionSide}-{side}")
+            prYellow(f"{symbol} | ID: {id} | Status: {status} | Side: {positionSide}-{side} | Type: {type}")
             #globalVar.orderList.append(id, type)
             
-        elif(event_dict["o"]["X"] == "PARTIALLY_FILLED") and symbol == globalVar.symbol:
-            prRed(f"ORDER:: ID: {id} | Type: {type} | Status: {status} | Side: {positionSide}-{side}")
+        elif event_dict["o"]["X"] == "PARTIALLY_FILLED" and symbol == globalVar.symbol:
+            prRed(f"{symbol} | ID: {id} | Status: {status} | Side: {positionSide}-{side} | Type: {type}")
         
             
 def on_error(ws, error):
     print(f"Error: {error}")
 
 def on_close(ws, close_status_code, close_msg):
-    send_error("\n*******END*******")
+    sendData("\n*******END*******")
     print(f"Close: {close_status_code} {close_msg}")
 
 def run_stream():

@@ -3,7 +3,7 @@ from binance.lib.utils import config_logging
 from binance.error import ClientError
 import logging
 from variables import globalVar
-from binanceAPI.teleBot import send_error
+from binanceAPI.teleBot import sendData
 from components.fixOrder import *
 
 #config_logging(logging, logging.DEBUG)
@@ -20,6 +20,6 @@ def newMarketOrder(symbol,positionSide,side,type,quantity):
         )
         #logging.info(response)
     except ClientError as error:
-        send_error("NewMarketOrder error. Error code: {}, error message: {}".format(error.error_code, error.error_message))
+        sendData("NewMarketOrder error. Error code: {}, error message: {}".format(error.error_code, error.error_message))
         logging.error("NewMarketOrder error. Error code: {}, error message: {}".format(error.error_code, error.error_message))
         

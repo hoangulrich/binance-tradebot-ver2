@@ -34,7 +34,7 @@ def fixOrder(errorType):
         #         print(f"Price({price}) > Floor({globalVar.initialFloor}) => loop long")
         #         loopLong(globalVar.quantity)
           
-def fixExpired(positionSide):
+def fixExpired(id,positionSide):
     from components.loopOrder import loopShort, loopLong
     if positionSide == "LONG":
         prCyan("FIX => loop long")

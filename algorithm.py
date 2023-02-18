@@ -1,15 +1,13 @@
 import variables.globalVar as globalVar
 from components.loopOrder import *
 from components.endOrder import *
-from components.printOrder import printOrder
 from components.restart import restart_stream
-from module.cancelOrder import cancelOrder
 from module.positionIsEmpty import positionIsEmpty
 from utils.printColor import *
 from binanceAPI.teleBot import *
 
 
-def algorithm(filledPrice, filledQuantity, filledPositionSide, filledStatus):
+def algorithm(symbol, filledPrice, filledQuantity, filledPositionSide, filledStatus):
 
     # RESTART PROGRAM WHEN THERE ARE NO POSITION LEFT
     if positionIsEmpty(globalVar.symbol) == True:
@@ -28,10 +26,10 @@ def algorithm(filledPrice, filledQuantity, filledPositionSide, filledStatus):
                 float(filledPrice), globalVar.decimalPrecision)
             globalVar.initialCeiling = round(
                 globalVar.initialFloor + globalVar.gap * globalVar.initialFloor, globalVar.decimalPrecision)
-            # send_error("\n*******START*******" +
-            #            "\n - Current Ceiling Price is: " + str(round(globalVar.initialCeiling, 4)) +
-            #            "\n - Current Floor Price is: " + str(round(globalVar.initialFloor, 4)) +
-            #            "\n https://www.binance.com/en/futures/"+globalVar.symbol)
+            sendData("\n*******START*******" +
+                       "\n - Current Ceiling Price is: " + str(round(globalVar.initialCeiling, 4)) +
+                       "\n - Current Floor Price is: " + str(round(globalVar.initialFloor, 4))) #+
+                    #    "\n https://www.binance.com/en/futures/"+globalVar.symbol)
             print("\nCeiling Price: " + str(round(globalVar.initialCeiling, 4)) +
                   "\nFloor Price: " + str(round(globalVar.initialFloor, 4))
                   +"\nChart:")
@@ -43,10 +41,10 @@ def algorithm(filledPrice, filledQuantity, filledPositionSide, filledStatus):
         globalVar.cumulativeMargin += globalVar.margin
 
         # SEND INFO TELEGRAM
-        # send_error("Order no. " + str(globalVar.x) +
-        #            "\n - Order is " + str(filledStatus) + " " + str(filledPositionSide) +
-        #            "\n - Order margin is " + str(round(globalVar.margin, 2)) + " USDT" +
-        #            "\n - Total NAV is " + str(round(globalVar.cumulativeMargin, 2)) + " USDT")
+        sendData(str(symbol) + " Order no. " + str(globalVar.x) +
+                   "\n - Order is " + str(filledStatus) + " " + str(filledPositionSide) +
+                   "\n - Order margin is " + str(round(globalVar.margin, 2)) + " USDT" +
+                   "\n - Total NAV is " + str(round(globalVar.cumulativeMargin, 2)) + " USDT")
         print("\nPHASE " + str(globalVar.x))
 
         # EVENT LOOP

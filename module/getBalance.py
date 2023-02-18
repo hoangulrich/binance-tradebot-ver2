@@ -2,7 +2,7 @@ from binanceAPI.user import um_futures_client
 from binance.lib.utils import config_logging
 from binance.error import ClientError
 import logging
-from binanceAPI.teleBot import send_error
+from binanceAPI.teleBot import sendData
 
 #config_logging(logging, logging.DEBUG)
 
@@ -14,7 +14,7 @@ def getBalance():
             if i["asset"] == "USDT":
                 return float(i["availableBalance"])
     except ClientError as error:
-        send_error("Found error. status: {}, error code: {}, error message: {}".format(
+        sendData("Found error. status: {}, error code: {}, error message: {}".format(
                 error.status_code, error.error_code, error.error_message
             ))
         logging.error(
