@@ -4,6 +4,7 @@ from module.getBalance import *
 from datetime import datetime
 from module.newOrder import *
 from utils.printColor import *
+from module.cancelOrder import *
 
 # CREATE NEW MARKET ORDER INITIALLY
 def initialOrder(symbol):

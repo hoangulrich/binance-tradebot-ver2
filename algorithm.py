@@ -7,7 +7,7 @@ from utils.printColor import *
 from binanceAPI.teleBot import *
 
 
-def algorithm(symbol, filledPrice, filledQuantity, filledPositionSide, filledStatus):
+def algorithm(symbol, price, quantity, positionSide, type):
 
     # RESTART PROGRAM WHEN THERE ARE NO POSITION LEFT
     if positionIsEmpty(globalVar.symbol) == True:
@@ -23,10 +23,12 @@ def algorithm(symbol, filledPrice, filledQuantity, filledPositionSide, filledSta
 
             # SHORT 1ST
             globalVar.initialFloor = round(
-                float(filledPrice), globalVar.decimalPrecision)
+                float(price), globalVar.decimalPrecision)
             globalVar.initialCeiling = round(
                 globalVar.initialFloor + globalVar.gap * globalVar.initialFloor, globalVar.decimalPrecision)
-            sendData("\n*******START*******" +
+            
+            # LOG/INFO
+            sendData("\n*******START*******" + f"\n{symbol}" +
                        "\n - Current Ceiling Price is: " + str(round(globalVar.initialCeiling, 4)) +
                        "\n - Current Floor Price is: " + str(round(globalVar.initialFloor, 4))) #+
                     #    "\n https://www.binance.com/en/futures/"+globalVar.symbol)
@@ -36,13 +38,13 @@ def algorithm(symbol, filledPrice, filledQuantity, filledPositionSide, filledSta
             print(f"\thttps://www.binance.com/en/futures/{globalVar.symbol}")
 
         # CALCULATE MARGIN/NAV
-        globalVar.margin = round(float(filledQuantity) / globalVar.leverage *
+        globalVar.margin = round(float(quantity) / globalVar.leverage *
                                  float(globalVar.initialCeiling), globalVar.decimalPrecision)
         globalVar.cumulativeMargin += globalVar.margin
 
-        # SEND INFO TELEGRAM
+        # LOG/INFO
         sendData(str(symbol) + " Order no. " + str(globalVar.x) +
-                   "\n - Order is " + str(filledStatus) + " " + str(filledPositionSide) +
+                   "\n - Order is " + str(type) + " " + str(positionSide) +
                    "\n - Order margin is " + str(round(globalVar.margin, 2)) + " USDT" +
                    "\n - Total NAV is " + str(round(globalVar.cumulativeMargin, 2)) + " USDT")
         print("\nPHASE " + str(globalVar.x))
@@ -51,25 +53,23 @@ def algorithm(symbol, filledPrice, filledQuantity, filledPositionSide, filledSta
         if globalVar.x < globalVar.Xmax:
             
             globalVar.x += 1
-            # globalVar.quantity = globalVar.quantity * pow(2, globalVar.x)
             globalVar.quantity = globalVar.quantity * globalVar.power
-            # globalVar.quantity = globalVar.quantity * 2
 
-            if filledPositionSide == "LONG":#and globalVar.expiredOrder == False:
+            if positionSide == "LONG":
                 loopLong(globalVar.quantity)
-            elif filledPositionSide == "SHORT": #and globalVar.expiredOrder == False:
+            elif positionSide == "SHORT":
                 loopShort(globalVar.quantity)
 
         # LAST ORDER/BREAK EVEN
         else:
             globalVar.x += 1
             if globalVar.x == globalVar.Xmax + 1:
-                if filledPositionSide == "LONG":
+                if positionSide == "LONG":
                     endLong()
                 else:
                     endShort()
             if globalVar.x == globalVar.Xmax + 2:
-                if filledPositionSide == "LONG":
+                if positionSide == "LONG":
                     endFinalLong()
                 else:
                     endFinalShort()

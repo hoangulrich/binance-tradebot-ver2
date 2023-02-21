@@ -37,9 +37,6 @@ initialBalance = 0
 global decimalPrecision
 decimalPrecision = 0
 
-global expiredOrder
-expiredOrder = False
-
 global quantityPrecision
 quantityPrecision = 0
 
@@ -57,3 +54,9 @@ BE = None
 
 global orderList
 orderList = []
+
+global expiredOrderList
+expiredOrderList = []
+
+global filledOrderList
+filledOrderList = []
