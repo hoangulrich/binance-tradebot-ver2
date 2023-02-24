@@ -14,15 +14,15 @@ def restart_stream():
   prCyan("CANCEL ALL ORDERS(restart)")
 
   # CALCULATE PNL AND DURATION
-  # pnl = round(getBalance() - globalVar.initialBalance, 4)
-  # duration = getDuration()
-  # record(pnl, duration)
+  pnl = round(getBalance() - globalVar.initialBalance, 4)
+  duration = getDuration()
+  record(pnl, duration)
 
   # SEND INFO TELEGRAM + LOG
-  # sendData("PNL: " + "$" + str(pnl) + "\nGain: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%"
-  # + "\n*******RESTART*******")
-  # print("PNL: " + "$" + str(pnl) + " | GAIN: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%")
-  # prCyan("\n*******RESTART*******")
+  sendData("PNL: " + "$" + str(pnl) + "\nGain: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%"
+  + "\n*******RESTART*******")
+  print("PNL: " + "$" + str(pnl) + " | GAIN: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%")
+  prCyan("\n*******RESTART*******")
 
   # RESTART (server)
   # globalVar.orderList.clear()

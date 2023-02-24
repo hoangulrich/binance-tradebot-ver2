@@ -1,6 +1,6 @@
 import variables.globalVar as globalVar
 
-class orderClass:
+class order:
     def __init__(self, symbol, id, type, price, quantity, status, side, positionSide):
         self.id = id
         self.type = type

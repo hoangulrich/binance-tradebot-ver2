@@ -58,9 +58,9 @@ def on_message(ws, message):
             prYellow(f"{symbol} | ID: {id} | Status: {status} | Side: {positionSide}-{side} | Type: {type}")
             
             # FIX FILLED ORDER DOESNT SHOW
-            if getOrderCount(symbol) == 0 and globalVar.x == 0 and id not in globalVar.expiredOrderList:
-                globalVar.expiredOrderList.append(id)
-                algorithm(symbol, getPositionPrice(symbol, "SHORT"), quantity, positionSide, type)
+            # if getOrderCount(symbol) == 0 and globalVar.x == 0 and id not in globalVar.expiredOrderList:
+            #     globalVar.expiredOrderList.append(id)
+            #     algorithm(symbol, getPositionPrice(symbol, "SHORT"), quantity, positionSide, type)
             
         elif status == "PARTIALLY_FILLED":
             prGreen(f"{symbol} | ID: {id} | Status: {status} | Side: {positionSide}-{side} | Type: {type}")

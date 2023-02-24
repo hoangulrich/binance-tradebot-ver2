@@ -38,7 +38,7 @@ def algorithm(symbol, price, quantity, positionSide, type):
             print(f"\thttps://www.binance.com/en/futures/{globalVar.symbol}")
 
         # CALCULATE MARGIN/NAV
-        globalVar.margin = round(float(quantity) / globalVar.leverage *
+        globalVar.margin = round(float(globalVar.quantity) / globalVar.leverage *
                                  float(globalVar.initialCeiling), globalVar.decimalPrecision)
         globalVar.cumulativeMargin += globalVar.margin
 
@@ -61,35 +61,15 @@ def algorithm(symbol, price, quantity, positionSide, type):
                 loopShort(globalVar.quantity)
 
         # LAST ORDER/BREAK EVEN
-        else:
+        elif globalVar.x == globalVar.Xmax:
             globalVar.x += 1
-            if globalVar.x == globalVar.Xmax + 1:
-                if positionSide == "LONG":
-                    endLong()
-                else:
-                    endShort()
-            if globalVar.x == globalVar.Xmax + 2:
-                if positionSide == "LONG":
-                    endFinalLong()
-                else:
-                    endFinalShort()
-
-# def algorithm(price, quantity, positionSide, type):
-#     #INITIAL
-#     if globalVar.x == 0:
-#         globalVar.initialFloor = round(float(price), globalVar.decimalPrecision)
-#         globalVar.initialCeiling = round(globalVar.initialFloor + globalVar.gap * globalVar.initialFloor, globalVar.decimalPrecision)
-        
-#         newOrder(globalVar.symbol, "LONG", "BUY", "STOP_MARKET", globalVar.quantity, globalVar.initialCeiling)
-#         TP_SHORT = round(globalVar.initialFloor*99.75/100,globalVar.decimalPrecision)
-#         takeProfit(globalVar.symbol, "SHORT", "BUY", "TAKE_PROFIT_MARKET", TP_SHORT)
-#     globalVar.x + 1
-
-#     #LOOP
-#     if globalVar.x != 0:
-#         if positionSide == "SHORT" and type == "TAKE_PROFIT_MARKET":
-#             newMarketOrder(globalVar.symbol, "SHORT", "SELL", "MARKET", globalVar.quantity)
-#             TP_SHORT = round(globalVar.initialFloor*99.75/100,globalVar.decimalPrecision)
-#             takeProfit(globalVar.symbol, "SHORT", "BUY", "TAKE_PROFIT_MARKET", TP_SHORT)
-#         elif positionSide == "LONG" and type == "TAK_MARKET":
-#             newMarketOrder(globalVar.symbol, "LONG", "BUY", "MRKET", globalVar.quantity)
+            # if globalVar.x == globalVar.Xmax + 1:
+            if positionSide == "LONG":
+                endLong()
+            else:
+                endShort()
+            # if globalVar.x == globalVar.Xmax + 2:
+            #     if positionSide == "LONG":
+            #         endFinalLong()
+            #     else:
+            #         endFinalShort()

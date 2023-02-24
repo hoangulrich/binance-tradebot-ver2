@@ -23,4 +23,5 @@ def takeProfit(symbol,positionSide,side,type,stopPrice):
         #logging.info(response)
     except ClientError as error:
         sendData("TakeProfit error. Error code: {}, error message: {}".format(error.error_code, error.error_message))
-        logging.error("TakeProfit error. Error code: {}, error message: {}".format(error.error_code, error.error_message))
+        if error.error_code == -2021:
+            prRed("ERROR:: Order Imme Trigger | Type: takeProfit")
