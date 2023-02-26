@@ -19,14 +19,14 @@ def restart_stream():
   record(pnl, duration)
 
   # SEND INFO TELEGRAM + LOG
-  sendData("PNL: " + "$" + str(pnl) + "\nGain: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%"
-  + "\n*******RESTART*******")
+  # sendData("PNL: " + "$" + str(pnl) + "\nGain: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%"
+  # + "\n*******RESTART*******")
   print("PNL: " + "$" + str(pnl) + " | GAIN: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%")
   prCyan("\n*******RESTART*******")
 
   # RESTART (server)
   # globalVar.orderList.clear()
-  ask_input()
+  ask_input(globalVar.symbol)
   initialOrder(globalVar.symbol)
 
   # RESTART (local)

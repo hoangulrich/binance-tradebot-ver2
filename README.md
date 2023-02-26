@@ -17,7 +17,7 @@ This trade bot utilizes Binance Futures API to access Binance websocket, creatin
 
 1. Get your API Key/Secret from Binance(enable Future) and TOKEN/chat_id from Telegram Bot Father: <br />
 
-    Binance: https://www.binance.com/en/my/settings/api-management
+    Binance: https://www.binance.com/en/my/settings/api-management <br />
     Telegram (Optional): https://telegram.me/BotFather <br />
 
 2. Add them to a dotenv(.env) file: <br />

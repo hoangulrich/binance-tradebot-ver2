@@ -28,9 +28,9 @@ def algorithm(symbol, price, quantity, positionSide, type):
                 globalVar.initialFloor + globalVar.gap * globalVar.initialFloor, globalVar.decimalPrecision)
             
             # LOG/INFO
-            sendData("\n*******START*******" + f"\n{symbol}" +
-                       "\n - Current Ceiling Price is: " + str(round(globalVar.initialCeiling, 4)) +
-                       "\n - Current Floor Price is: " + str(round(globalVar.initialFloor, 4))) #+
+            # sendData("\n*******START*******" + f"\n{symbol}" +
+            #            "\n - Current Ceiling Price is: " + str(round(globalVar.initialCeiling, 4)) +
+            #            "\n - Current Floor Price is: " + str(round(globalVar.initialFloor, 4))) #+
                     #    "\n https://www.binance.com/en/futures/"+globalVar.symbol)
             print("\nCeiling Price: " + str(round(globalVar.initialCeiling, 4)) +
                   "\nFloor Price: " + str(round(globalVar.initialFloor, 4))
@@ -43,10 +43,10 @@ def algorithm(symbol, price, quantity, positionSide, type):
         globalVar.cumulativeMargin += globalVar.margin
 
         # LOG/INFO
-        sendData(str(symbol) + " Order no. " + str(globalVar.x) +
-                   "\n - Order is " + str(type) + " " + str(positionSide) +
-                   "\n - Order margin is " + str(round(globalVar.margin, 2)) + " USDT" +
-                   "\n - Total NAV is " + str(round(globalVar.cumulativeMargin, 2)) + " USDT")
+        # sendData(str(symbol) + " Order no. " + str(globalVar.x) +
+        #            "\n - Order is " + str(type) + " " + str(positionSide) +
+        #            "\n - Order margin is " + str(round(globalVar.margin, 2)) + " USDT" +
+        #            "\n - Total NAV is " + str(round(globalVar.cumulativeMargin, 2)) + " USDT")
         print("\nPHASE " + str(globalVar.x))
 
         # EVENT LOOP
