@@ -1,9 +1,9 @@
 #! /usr/bin/python3
 import argparse
-from input import *
+from variables.input import *
 from binanceAPI.wsocket import *
 from module.newMarketOrder import *
-from binanceAPI.teleBot import application
+# from binanceAPI.teleBot import application
 
 def main():
     parser = argparse.ArgumentParser()

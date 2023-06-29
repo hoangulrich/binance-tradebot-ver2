@@ -5,7 +5,7 @@ from utils.printColor import *
 from datetime import datetime
 from binanceAPI.teleBot import *
 from components.startLoop import initialOrder
-from input import *
+from variables.input import *
 import os
 
 def restart_stream():
@@ -19,8 +19,8 @@ def restart_stream():
   record(pnl, duration)
 
   # SEND INFO TELEGRAM + LOG
-  # sendData("PNL: " + "$" + str(pnl) + "\nGain: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%"
-  # + "\n*******RESTART*******")
+  sendData("PNL: " + "$" + str(pnl) + "\nGain: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%"
+  + "\n*******RESTART*******")
   print("PNL: " + "$" + str(pnl) + " | GAIN: " + str(round(pnl/globalVar.cumulativeMargin*100,2)) +"%")
   prCyan("\n*******RESTART*******")
 

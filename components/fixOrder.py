@@ -8,7 +8,9 @@ def fixOrder(errorType):
     if errorType == "trigger": #and globalVar.x <= globalVar.Xmax:
         marketPrice = getPrice(globalVar.symbol)
         globalVar.x = globalVar.Xmax
-        newMarketOrder(globalVar.symbol, "SHORT", "SELL", "MARKET",0.3*globalVar.leverage/marketPrice)
+        newMarketOrder(globalVar.symbol, "SHORT", "SELL", "MARKET",globalVar.quantity * globalVar.power)
+
+        #newMarketOrder(globalVar.symbol, "SHORT", "SELL", "MARKET",0.3*globalVar.leverage/marketPrice)
 
         
         # # X EVEN
