@@ -5,10 +5,14 @@ from utils.printColor import *
 from module.cancelOrder import cancelOrder
 from module.newMarketOrder import *
 
+
 # CREATE ORDERS WHEN LONG FILLED
 def loopLong(quantity):
     cancelOrder(globalVar.symbol)
     prCyan("CANCEL ALL ORDERS(looplong)")
+    
+    #test
+    # getTrade(globalVar.symbol)
     
     TP_LONG = round(globalVar.initialCeiling*(1+globalVar.profit/globalVar.leverage),globalVar.decimalPrecision)
     SL_SHORT = TP_LONG
@@ -24,6 +28,9 @@ def loopLong(quantity):
 def loopShort(quantity):
     cancelOrder(globalVar.symbol)
     prCyan("CANCEL ALL ORDER(loopshort)")
+    
+    #test
+    # getTrade(globalVar.symbol)
     
     SL_LONG = round(globalVar.initialFloor*(1-globalVar.profit/globalVar.leverage),globalVar.decimalPrecision)
     TP_SHORT = SL_LONG

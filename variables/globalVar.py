@@ -40,6 +40,14 @@ decimalPrecision = 0
 global quantityPrecision
 quantityPrecision = 0
 
+#test
+global pnl
+pnl = 0
+global startTrade
+startTrade = 0
+global endTrade
+endTrade = 0
+
 global start 
 start = None
 

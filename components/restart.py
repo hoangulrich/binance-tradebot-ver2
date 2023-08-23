@@ -7,12 +7,18 @@ from binanceAPI.teleBot import *
 from components.startLoop import initialOrder
 from variables.input import *
 import os
+from module.getTrade import *
 
 def restart_stream():
   # CLEAR LEFTOVER ORDERS
   cancelOrder(globalVar.symbol)
   prCyan("CANCEL ALL ORDERS(restart)")
 
+  #test
+  globalVar.endTrade = getTradeEnd(globalVar.symbol)
+  getPNL(globalVar.symbol, globalVar.startTrade, globalVar.endTrade)
+  print(globalVar.pnl)
+  
   # CALCULATE PNL AND DURATION
   pnl = round(getBalance() - globalVar.initialBalance, 4)
   duration = getDuration()

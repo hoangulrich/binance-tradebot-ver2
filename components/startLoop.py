@@ -5,6 +5,7 @@ from datetime import datetime
 from module.newOrder import *
 from utils.printColor import *
 from module.cancelOrder import *
+from module.getTrade import *
 
 # CREATE NEW MARKET ORDER INITIALLY
 def initialOrder(symbol):
@@ -14,4 +15,7 @@ def initialOrder(symbol):
   prCyan("\nINITIAL ORDER(startloop)")
   # newMarketOrder(globalVar.symbol, "LONG", "BUY", "MARKET", globalVar.quantity)
   newMarketOrder(symbol, "SHORT", "SELL", "MARKET", globalVar.quantity)
+  
+  #test
+  globalVar.startTrade = getTradeStart(symbol)
 
